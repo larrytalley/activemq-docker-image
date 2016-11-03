@@ -1,4 +1,4 @@
-FROM codenvy/centos_jdk8
+FROM codenvy/debian_jdk8
 MAINTAINER Larry TALLEY <larry.talley@gmail.com>
 #Copied almost exactly from
 #FROM webcenter/openjdk-jre:8
