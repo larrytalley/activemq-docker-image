@@ -7,9 +7,9 @@ MAINTAINER Larry TALLEY <larry.talley@gmail.com>
 # Update distro and install some packages
 RUN sudo apt-get update && \
     sudo apt-get install --no-install-recommends -y python-testtools python-nose python-pip vim curl supervisor logrotate locales  && \
-    update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX && \
-    locale-gen en_US.UTF-8 && \
-    dpkg-reconfigure locales && \
+    sudo update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX && \
+    sudo locale-gen en_US.UTF-8 && \
+    sudo dpkg-reconfigure locales && \
     sudo rm -rf /var/lib/apt/lists/*
 
 # Install stompy
@@ -19,7 +19,6 @@ RUN sudo pip install stomp.py
 COPY assets/setup/ /app/setup/
 RUN chmod +x /app/setup/install
 RUN /app/setup/install
-
 
 # Copy the app setting
 COPY assets/entrypoint /app/entrypoint
