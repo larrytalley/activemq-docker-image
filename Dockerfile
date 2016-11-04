@@ -1,38 +1,27 @@
-FROM codenvy/debian_jdk8
+FROM codenvy/alpine_jdk8
 MAINTAINER Larry TALLEY <larry.talley@gmail.com>
-#Copied almost exactly from
-#FROM webcenter/openjdk-jre:8
-#MAINTAINER Sebastien LANGOUREAUX <linuxworkgroup@hotmail.com>
 
-# Update distro and install some packages
-RUN sudo apt-get update && \
-    sudo apt-get install --no-install-recommends -y python-testtools python-nose python-pip vim curl supervisor logrotate locales  && \
-    sudo update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX && \
-    sudo locale-gen en_US.UTF-8 && \
-    sudo dpkg-reconfigure locales && \
-    sudo rm -rf /var/lib/apt/lists/*
+# from https://hub.docker.com/r/rmohr/activemq/~/dockerfile
+ENV ACTIVEMQ_VERSION 5.14.1
+ENV ACTIVEMQ apache-activemq-$ACTIVEMQ_VERSION
+ENV ACTIVEMQ_TCP=61616 ACTIVEMQ_AMQP=5672 ACTIVEMQ_STOMP=61613 ACTIVEMQ_MQTT=1883 ACTIVEMQ_WS=61614 ACTIVEMQ_UI=8161
 
-# Install stompy
-RUN sudo pip install stomp.py
+ENV ACTIVEMQ_HOME /opt/activemq
 
-# Lauch app install
-COPY assets/setup/ /app/setup/
-RUN chmod +x /app/setup/install
-RUN /app/setup/install
+RUN set -x && \
+    mkdir -p /opt && \
+    apk --update add --virtual build-dependencies curl && \
+    curl -s -S https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bin.tar.gz | tar xvz -C /opt && \
+    ln -s /opt/$ACTIVEMQ $ACTIVEMQ_HOME && \
+    addgroup -S activemq && adduser -S -H -G activemq -h $ACTIVEMQ_HOME activemq && \
+    chown -R activemq:activemq /opt/$ACTIVEMQ && \
+    chown -h activemq:activemq $ACTIVEMQ_HOME && \
+    apk del build-dependencies && \
+    rm -rf /var/cache/apk/*
 
-# Copy the app setting
-COPY assets/entrypoint /app/entrypoint
-COPY assets/run.sh /app/run.sh
-RUN chmod +x /app/run.sh
+USER activemq
 
-# Expose all port
-EXPOSE 8161
-EXPOSE 61616
-EXPOSE 5672
-EXPOSE 61613
-EXPOSE 1883
-EXPOSE 61614
+WORKDIR $ACTIVEMQ_HOME
+EXPOSE $ACTIVEMQ_TCP $ACTIVEMQ_AMQP $ACTIVEMQ_STOMP $ACTIVEMQ_MQTT $ACTIVEMQ_WS $ACTIVEMQ_UI
 
-# Expose some folders
-VOLUME ["/data/activemq"]
-VOLUME ["/var/
+CMD ["/bin/sh", "-c", "bin/activemq console"]
