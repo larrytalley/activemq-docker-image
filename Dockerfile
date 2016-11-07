@@ -9,9 +9,13 @@ ENV ACTIVEMQ_TCP=61616 ACTIVEMQ_AMQP=5672 ACTIVEMQ_STOMP=61613 ACTIVEMQ_MQTT=188
 
 ENV ACTIVEMQ_HOME /opt/activemq
 
-RUN curl -LO https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bin.tar.gz && \
+ADD activemq $ACTIVEMQ_HOME
+
+RUN mkdir $ACTIVEMQ_HOME/dist && \
+    cd $ACTIVEMQ_HOME\dist && \
+    curl -LO https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bin.tar.gz && \
     tar zxvf $ACTIVEMQ-bin.tar.gz && \
-    ln -sf $ACTIVEMQ ACTIVEMQ_HOME
+    ln -sf $ACTIVEMQ $ACTIVEMQ_HOME
     ln -sf $ACTIVEMQ_HOME/bin/activemq /etc/init.d/ && \
     update-rc.d activemq defaults && \
     addgroup -S activemq && adduser -S -H -G activemq -h $ACTIVEMQ_HOME activemq && \
