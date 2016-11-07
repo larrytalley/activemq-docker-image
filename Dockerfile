@@ -29,11 +29,4 @@ USER activemq
 WORKDIR $ACTIVEMQ_HOME
 EXPOSE $ACTIVEMQ_TCP $ACTIVEMQ_AMQP $ACTIVEMQ_STOMP $ACTIVEMQ_MQTT $ACTIVEMQ_WS $ACTIVEMQ_UI
 
-CMD java -Xmx1G -Dcom.sun.management.jmxremote.ssl=false \
--Dcom.sun.management.jmxremote.password.file=/opt/activemq/conf/jmx.password \
--Dcom.sun.management.jmxremote.access.file=/opt/activemq/conf/jmx.access \
--Djava.util.logging.config.file=logging.properties -Dcom.sun.management.jmxremote \
--Djava.io.tmpdir=/opt/activemq/tmp -Dactivemq.classpath=/opt/activemq/conf \
--Dactivemq.home=/opt/activemq -Dactivemq.base=/opt/activemq \
--Dactivemq.conf=/opt/activemq/conf \
--Dactivemq.data=/opt/activemq/data -jar /opt/activemq/bin/activemq.jar start
+CMD ["/bin/sh", "-c", "bin/activemq console"]
