@@ -9,16 +9,16 @@ ENV ACTIVEMQ_TCP=61616 ACTIVEMQ_AMQP=5672 ACTIVEMQ_STOMP=61613 ACTIVEMQ_MQTT=188
 
 ENV ACTIVEMQ_HOME /opt/activemq
 
-ADD https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bin.tar.gz $ACTIVEMQ_HOME/
+ADD https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bin.tar.gz $ACTIVEMQ_HOME/dist/
+ADD $ACTIVEMQ_HOME/dist/$ACTIVEMQ-bin.tar.gz $ACTIVEMQ_HOME
 
-WORKDIR $ACTIVEMQ_HOME
+WORKDIR $ACTIVEMQ_HOME/$ACTIVEMQ_VERSION
 
 RUN find .
 
-RUN tar zxvf $ACTIVEMQ-bin.tar.gz && \
-    ln -sf $ACTIVEMQ_HOME/bin/activemq /etc/init.d/ && \
+RUN ln -sf $ACTIVEMQ_HOME/$ACTIVEMQ_VERSION/bin/activemq /etc/init.d/ && \
     update-rc.d activemq defaults && \
-    addgroup -S activemq && adduser -S -H -G activemq -h $ACTIVEMQ_HOME activemq && \
+    addgroup -S activemq && adduser -S -H -G activemq -h $ACTIVEMQ_HOME/$ACTIVEMQ_VERSION activemq && \
     chown -R activemq:activemq $ACTIVEMQ_HOME && \
     chown -h activemq:activemq $ACTIVEMQ_HOME && \
     /etc/init.d/activemq setup /etc/default/activemq
@@ -30,4 +30,4 @@ USER activemq
 
 EXPOSE $ACTIVEMQ_TCP $ACTIVEMQ_AMQP $ACTIVEMQ_STOMP $ACTIVEMQ_MQTT $ACTIVEMQ_WS $ACTIVEMQ_UI
 
-CMD ["/bin/sh", "-c", "$ACTIVEMQ/bin/activemq console"]
+CMD ["/bin/sh", "-c", "$ACTIVEMQ/$ACTIVEMQ_VERSION/bin/activemq console"]
