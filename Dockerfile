@@ -8,11 +8,12 @@ ENV ACTIVEMQ apache-activemq-$ACTIVEMQ_VERSION
 ENV ACTIVEMQ_TCP=61616 ACTIVEMQ_AMQP=5672 ACTIVEMQ_STOMP=61613 ACTIVEMQ_MQTT=1883 ACTIVEMQ_WS=61614 ACTIVEMQ_UI=8161
 
 ENV ACTIVEMQ_HOME /opt/activemq
+ENV ACTIVEMQ_DIST /opt/activemq/dist
 
-RUN mkdir -p /opt && \
+RUN mkdir -p $ACTIVEMQ_DIST && \
+    cd $ACTIVEMQ_DIST && \
     curl -LO https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bin.tar.gz && \
     tar zxvf $ACTIVEMQ-bin.tar.gz && \
-    ln -sf /opt/ACTIVEMQ /opt/activemq && \
     ln -sf /opt/activemq/bin/activemq /etc/init.d/ && \
     update-rc.d activemq defaults && \
     addgroup -S activemq && adduser -S -H -G activemq -h $ACTIVEMQ_HOME activemq && \
@@ -21,7 +22,7 @@ RUN mkdir -p /opt && \
     /etc/init.d/activemq setup /etc/default/activemq
 
 # Use our own /etc/default/activemq to activate jmx
-ADD etc/default /etc/default
+#ADD etc/default /etc/default
 
 USER activemq
 
