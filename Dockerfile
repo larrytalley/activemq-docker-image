@@ -10,8 +10,10 @@ ENV ACTIVEMQ_TCP=61616 ACTIVEMQ_AMQP=5672 ACTIVEMQ_STOMP=61613 ACTIVEMQ_MQTT=188
 ENV ACTIVEMQ_HOME /opt/activemq
 ENV ACTIVEMQ_DIST /opt/activemq/dist
 
-RUN mkdir -p $ACTIVEMQ_DIST && \
-    cd $ACTIVEMQ_DIST && \
+RUN mkdir -p /opt
+RUN mkdir -p /opt/activemq
+RUN mkdir -p /opt/activemq/dist
+RUN cd $ACTIVEMQ_DIST && \
     curl -LO https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bin.tar.gz && \
     tar zxvf $ACTIVEMQ-bin.tar.gz && \
     ln -sf /opt/activemq/bin/activemq /etc/init.d/ && \
