@@ -11,9 +11,11 @@ ENV ACTIVEMQ_HOME /opt/activemq
 
 ADD https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bin.tar.gz $ACTIVEMQ_HOME/
 
-RUN cd $ACTIVEMQ_HOME && \
-    tar zxvf $ACTIVEMQ-bin.tar.gz && \
-    ln -sf $ACTIVEMQ $ACTIVEMQ_HOME
+WORKDIR $ACTIVEMQ_HOME
+
+RUN find .
+
+RUN tar zxvf $ACTIVEMQ-bin.tar.gz && \
     ln -sf $ACTIVEMQ_HOME/bin/activemq /etc/init.d/ && \
     update-rc.d activemq defaults && \
     addgroup -S activemq && adduser -S -H -G activemq -h $ACTIVEMQ_HOME activemq && \
@@ -26,7 +28,6 @@ RUN cd $ACTIVEMQ_HOME && \
 
 USER activemq
 
-WORKDIR $ACTIVEMQ_HOME
 EXPOSE $ACTIVEMQ_TCP $ACTIVEMQ_AMQP $ACTIVEMQ_STOMP $ACTIVEMQ_MQTT $ACTIVEMQ_WS $ACTIVEMQ_UI
 
-CMD ["/bin/sh", "-c", "bin/activemq console"]
+CMD ["/bin/sh", "-c", "$ACTIVEMQ/bin/activemq console"]
