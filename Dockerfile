@@ -9,8 +9,7 @@ ENV ACTIVEMQ_TCP=61616 ACTIVEMQ_AMQP=5672 ACTIVEMQ_STOMP=61613 ACTIVEMQ_MQTT=188
 
 ENV ACTIVEMQ_HOME /opt/activemq
 
-RUN curl -LO https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bin.tar.gz
-
+ADD curl -LO https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bin.tar.gz ./
 ADD $ACTIVEMQ-bin.tar.gz $ACTIVEMQ_HOME
 RUN find $ACTIVEMQ_HOME
 WORKDIR $ACTIVEMQ_HOME/$ACTIVEMQ_VERSION
