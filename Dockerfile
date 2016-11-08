@@ -1,4 +1,4 @@
-FROM codenvy/centos_jdk8
+FROM codenvy/ubuntu_jdk8
 MAINTAINER Larry TALLEY <larry.talley@gmail.com>
 
 # from https://hub.docker.com/r/rmohr/activemq/~/dockerfile
