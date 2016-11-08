@@ -11,12 +11,11 @@ ENV ACTIVEMQ_HOME /opt/activemq
 
 USER root
     
-RUN wget https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bin.tar.gz 
-
-RUN tar zxvf $ACTIVEMQ-bin.tar.gz && \
+RUN wget https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bin.tar.gz && \
+    tar zxvf $ACTIVEMQ-bin.tar.gz && \
     ln -sf $ACTIVEMQ /opt/activemq && \
     ln -sf /opt/activemq/bin/activemq /etc/init.d/ && \
-    adduser --system --group activemq --home $ACTIVEMQ_HOME activemq && \
+    adduser --system --group --home $ACTIVEMQ_HOME activemq && \
     chown -R activemq:activemq $ACTIVEMQ_HOME && \
     chown -h activemq:activemq $ACTIVEMQ_HOME && \
     update-rc.d activemq defaults && \
