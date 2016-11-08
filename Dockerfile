@@ -11,11 +11,11 @@ ENV ACTIVEMQ_HOME /opt/activemq
 
 RUN curl -LO https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bin.tar.gz && \
     tar zxvf $ACTIVEMQ-bin.tar.gz && \
+    ln -sf $ACTIVEMQ /opt/activemq && \
+    ln -sf /opt/activemq/bin/activemq /etc/init.d/ && \
     addgroup -S activemq && adduser -S -H -G activemq -h $ACTIVEMQ_HOME activemq && \
     chown -R activemq:activemq $ACTIVEMQ_HOME && \
     chown -h activemq:activemq $ACTIVEMQ_HOME && \
-    ln -sf $ACTIVEMQ /opt/activemq && \
-    ln -sf /opt/activemq/bin/activemq /etc/init.d/ && \
     update-rc.d activemq defaults && \
     /etc/init.d/activemq setup /etc/default/activemq
     
