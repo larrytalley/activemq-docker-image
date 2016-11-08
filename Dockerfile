@@ -16,7 +16,7 @@ RUN wget https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bi
 RUN tar zxvf $ACTIVEMQ-bin.tar.gz && \
     ln -sf $ACTIVEMQ /opt/activemq && \
     ln -sf /opt/activemq/bin/activemq /etc/init.d/ && \
-    addgroup -S activemq && adduser -S -H -G activemq -h $ACTIVEMQ_HOME activemq && \
+    addgroup -S activemq && adduser -G activemq -h $ACTIVEMQ_HOME activemq && \
     chown -R activemq:activemq $ACTIVEMQ_HOME && \
     chown -h activemq:activemq $ACTIVEMQ_HOME && \
     update-rc.d activemq defaults && \
