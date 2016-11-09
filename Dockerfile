@@ -13,7 +13,7 @@ USER root
     
 RUN wget https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bin.tar.gz && \
     tar zxvf $ACTIVEMQ-bin.tar.gz && \
-    mv $ACTIVEMQ/ /opt/activemq && \
+    mv $ACTIVEMQ /opt/activemq && \
     ln -f /opt/activemq/bin/activemq /etc/init.d/ && \
     adduser --system --group --home $ACTIVEMQ_HOME --no-create-home activemq && \
     chown -R activemq:activemq $ACTIVEMQ_HOME && \
