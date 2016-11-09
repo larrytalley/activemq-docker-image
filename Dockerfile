@@ -23,7 +23,7 @@ RUN wget https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bi
 #    update-rc.d activemq defaults && \
 #    /etc/init.d/activemq setup /etc/default/activemq
     
-USER activemq
+#USER activemq
 
 WORKDIR $ACTIVEMQ_HOME
 
