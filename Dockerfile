@@ -18,10 +18,11 @@ RUN wget https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bi
     adduser --system --group --home $ACTIVEMQ_HOME --no-create-home activemq && \
     chown -R activemq:activemq $ACTIVEMQ_HOME && \
     chown -h activemq:activemq $ACTIVEMQ_HOME && \
-    update-rc.d activemq defaults && \
-    /etc/init.d/activemq setup /etc/default/activemq
+    update-rc.d activemq defaults
     
 USER activemq
+
+RUN /etc/init.d/activemq setup /etc/default/activemq
 
 WORKDIR $ACTIVEMQ_HOME
 
