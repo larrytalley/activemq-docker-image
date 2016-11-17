@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  messagebus:
+    image: larrytalley/activemq-docker-image
+    environment:
+      ACTIVEMQ_NAME: "messagebus1"
+      ACTIVEMQ_REMOVE_DEFAULT_ACCOUNT: "true"
+      ACTIVEMQ_ADMIN_LOGIN: "admin"
+      ACTIVEMQ_ADMIN_PASSWORD: "admin"
+      ACTIVEMQ_WRITE_LOGIN: "producer_login"
+      ACTIVEMQ_WRITE_PASSWORD: "producer_password"
+      ACTIVEMQ_READ_LOGIN: "consumer_login"
+      ACTIVEMQ_READ_PASSWORD: "consumer_password"
+      ACTIVEMQ_JMX_LOGIN: "jmx_login"
+      ACTIVEMQ_JMX_PASSWORD: "jmx_password"
+      ACTIVEMQ_STATIC_TOPICS: "log;auth;akfish"
+      ACTIVEMQ_STATIC_QUEUES: "queue1;queue2;queue3"
+      ACTIVEMQ_MIN_MEMORY: "1024"
+      ACTIVEMQ_MAX_MEMORY: "1024"
+      ACTIVEMQ_ENABLED_SCHEDULER: "true"
+    mem_limit: 1073741824
+    command:  ["/bin/sh", "-c", "bin/activemq console"]
+    
+  dev-machine:
+    image: codenvy/ubuntu_jdk8
+    mem_limit: 1073741824
+    depends_on:
+      - messagebus
